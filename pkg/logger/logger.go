@@ -2,6 +2,7 @@ package logger
 
 import (
 	"context"
+	"github.com/gaganchawara/loans/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"os"
 	"time"
@@ -38,4 +39,15 @@ func Get(ctx context.Context) *logrus.Entry {
 
 func newStdLogger() *logrus.Entry {
 	return logrus.NewEntry(logrus.StandardLogger())
+}
+
+func ErrorLogger() func(error errors.Error) {
+	return func(error errors.Error) {
+		data := map[string]interface{}{}
+		for k, v := range error.Data() {
+			data[k] = v
+		}
+
+		Get(error.Context()).WithFields(data).WithField("code", error.Code()).Error(error.Error())
+	}
 }
