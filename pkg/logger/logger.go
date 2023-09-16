@@ -2,7 +2,6 @@ package logger
 
 import (
 	"context"
-	"github.com/gaganchawara/loans/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"os"
 	"time"

@@ -11,3 +11,8 @@ UNAME_ARCH=$(shell go env GOARCH)
 go-build-api:
 	@echo "\n Building Loans API"
 	@CGO_ENABLED=0 GOOS=$(UNAME_OS) GOARCH=$(UNAME_ARCH) go build -v -o $(API_OUT) $(API_MAIN_FILE)
+
+.PHONY: test-unit
+test-unit:
+	go test -tags=unit -timeout 5m `go list ./...` -coverprofile=coverage.out -coverpkg=./... ./...
+	go tool cover -func=coverage.out
