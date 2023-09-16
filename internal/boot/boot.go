@@ -2,6 +2,8 @@ package boot
 
 import (
 	"context"
+	"github.com/gaganchawara/loans/pkg/db"
+	"gorm.io/gorm"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -14,17 +16,27 @@ import (
 
 var (
 	cfg config.Config
+	DB *gorm.DB
 )
 
 func Initialize(ctx context.Context) {
+	var err error
+	var ierr errors.Error
+
 	logger.Get(ctx).Info("booting the application")
 
 	// initializes error packages with Hooks
 	errors.Initialize(logger.ErrorLogger())
-	err := pkgconfig.LoadConfig(getConfigPath(), GetEnv(), &cfg)
+	err = pkgconfig.LoadConfig(getConfigPath(), GetEnv(), &cfg)
 	if err != nil {
 		panic(err)
 	}
+
+	DB, ierr = db.NewDB(ctx, cfg.DB)
+	if ierr != nil {
+		panic(ierr)
+	}
+
 }
 
 func getConfigPath() string {
