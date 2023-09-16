@@ -1,0 +1,8 @@
+[App]
+    Env                   = "default"
+    ServiceName           = "loans"
+    Hostname              = "$app_name.aspire.com"
+    Port                  = ":9400"
+    ShutdownTimeout       = 60
+    ShutdownDelay         = 10
+    GitCommitHash         = "nil"
