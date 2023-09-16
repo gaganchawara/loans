@@ -4,7 +4,7 @@ import "github.com/gaganchawara/loans/pkg/db"
 
 type Config struct {
 	App App
-	DB db.Config
+	DB  db.Config
 }
 
 type App struct {

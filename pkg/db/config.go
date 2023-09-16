@@ -22,5 +22,5 @@ type Config struct {
 	MaxIdleConnections    int    `toml:"MaxIdleConnections"`
 	ConnectionMaxLifetime time.Duration
 	ConnectionMaxIdleTime time.Duration
-	DebugMode bool `json:"DebugMode"`
+	DebugMode             bool `json:"DebugMode"`
 }

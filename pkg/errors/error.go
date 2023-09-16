@@ -25,10 +25,10 @@ func Initialize(h ...Hook) {
 }
 
 type Err struct {
-	ctx   context.Context
-	code  string
-	err   error
-	data  map[string]string
+	ctx  context.Context
+	code string
+	err  error
+	data map[string]string
 }
 
 func New(ctx context.Context, code string, err error) Error {
@@ -36,10 +36,10 @@ func New(ctx context.Context, code string, err error) Error {
 		err = errors.New(code)
 	}
 	return &Err{
-		ctx:   ctx,
-		code:  code,
-		err:   err,
-		data:  map[string]string{},
+		ctx:  ctx,
+		code: code,
+		err:  err,
+		data: map[string]string{},
 	}
 }
 

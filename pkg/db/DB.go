@@ -8,12 +8,13 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"time"
+
 	"github.com/gaganchawara/loans/internal/errorcode"
 	"github.com/gaganchawara/loans/pkg/errors"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
-	"time"
 )
 
 func NewDB(ctx context.Context, c Config) (*gorm.DB, errors.Error) {

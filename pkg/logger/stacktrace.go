@@ -1,8 +1,9 @@
 package logger
 
 import (
-	"github.com/sirupsen/logrus"
 	"runtime/debug"
+
+	"github.com/sirupsen/logrus"
 )
 
 type StackTraceHook struct{}
