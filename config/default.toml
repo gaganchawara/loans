@@ -1,0 +1,23 @@
+[App]
+    Env                   = "dev"
+    ServiceName           = "loans"
+    Hostname              = "loans.lsp.com"
+    Port                  = ":9400"
+    ShutdownTimeout       = 60
+    ShutdownDelay         = 10
+    GitCommitHash         = "nil"
+
+[db]
+    Dialect               = "mysql"
+    Protocol              = "tcp"
+    Url                   = "localhost:3306"
+    Username              = "root"
+    Password              = "password"
+    SslMode               = "require"
+    Name                  = "loans"
+    AltersEnabled         = true
+    MaxOpenConnections    = 20
+    MaxIdleConnections    = 20
+    ConnectionMaxLifetime = 3
+    ConnectionMaxIdleTime = 3
+    DebugMode             = true

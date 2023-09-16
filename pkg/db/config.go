@@ -10,17 +10,17 @@ const (
 
 // Config struct holds db configurations and implements ConfigReader.
 type Config struct {
-	Dialect               string `toml:"Dialect"`
-	Protocol              string `toml:"Protocol"`
-	URL                   string `toml:"URL"`
-	Username              string `toml:"Username"`
-	Password              string `env:"Password"`
-	SslMode               string `toml:"SslMode"`
-	Name                  string `toml:"Name"`
-	AltersEnabled         bool   `toml:"AltersEnabled"`
-	MaxOpenConnections    int    `toml:"MaxOpenConnections"`
-	MaxIdleConnections    int    `toml:"MaxIdleConnections"`
-	ConnectionMaxLifetime time.Duration
-	ConnectionMaxIdleTime time.Duration
-	DebugMode             bool `json:"DebugMode"`
+	Dialect               string        `toml:"Dialect"`
+	Protocol              string        `toml:"Protocol"`
+	URL                   string        `toml:"URL"`
+	Username              string        `toml:"Username"`
+	Password              string        `env:"Password"`
+	SslMode               string        `toml:"SslMode"`
+	Name                  string        `toml:"Name"`
+	AltersEnabled         bool          `toml:"AltersEnabled"`
+	MaxOpenConnections    int           `toml:"MaxOpenConnections"`
+	MaxIdleConnections    int           `toml:"MaxIdleConnections"`
+	ConnectionMaxLifetime time.Duration `toml:"ConnectionMaxLifetime"`
+	ConnectionMaxIdleTime time.Duration `toml:"ConnectionMaxIdleTime"`
+	DebugMode             bool          `json:"DebugMode"`
 }

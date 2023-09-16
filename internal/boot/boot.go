@@ -39,7 +39,7 @@ func getRootPath() string {
 func GetEnv() string {
 	environment := os.Getenv("APP_ENV")
 	if environment == "" {
-		environment = "dev"
+		environment = "default"
 	}
 
 	return environment

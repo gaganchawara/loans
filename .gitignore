@@ -11,3 +11,7 @@
 bin/*
 
 coverage.out
+
+# The 'dev' environment configuration is used by individual developers to set up their local environments.
+# It is kept in the .gitignore to accommodate variations in configuration among different developers.
+dev.toml
