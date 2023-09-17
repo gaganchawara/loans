@@ -1,7 +1,12 @@
 package serverMux
 
 import (
+	"context"
+	"net/http"
 	"strings"
+
+	"github.com/gaganchawara/loans/pkg/grpcserver"
+	"google.golang.org/grpc/metadata"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -9,6 +14,17 @@ import (
 
 func DefaultServerMux() []runtime.ServeMuxOption {
 	return []runtime.ServeMuxOption{
+		// pushing method and uri data to meta so that they can be used for logging
+		runtime.WithMetadata(func(ctx context.Context, r *http.Request) metadata.MD {
+			md := make(map[string]string)
+			if method, ok := runtime.RPCMethod(ctx); ok {
+				md[grpcserver.RpcMethodKey] = method
+			}
+			if pattern, ok := runtime.HTTPPathPattern(ctx); ok {
+				md[grpcserver.UriKey] = pattern
+			}
+			return metadata.New(md)
+		}),
 		DefaultMarshalOption(),
 		DefaultHeaderMatcher(),
 	}

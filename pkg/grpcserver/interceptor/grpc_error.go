@@ -1,8 +1,8 @@
 package interceptors
 
-
 import (
 	"context"
+
 	"github.com/gaganchawara/loans/pkg/errors"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -11,8 +11,8 @@ import (
 
 var errorMap map[string]codes.Code
 
-// UnaryServerGrpcErrorInterceptor returns a grpc.UnaryServerInterceptor suitable
-// for converting goutils IError to grpc status error. errMap is used to map goutils Class to grpc status codes
+// UnaryServerGrpcErrorInterceptor returns a grpc.UnaryServerInterceptor suitable for converting
+// errors.Error to grpc status error
 func UnaryServerGrpcErrorInterceptor(errMap map[string]codes.Code) grpc.UnaryServerInterceptor {
 	errorMap = errMap
 	return func(
