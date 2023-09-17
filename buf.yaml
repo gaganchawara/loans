@@ -1,0 +1,9 @@
+version: v1beta1
+name: buf.build/gaganchawara/loans
+deps:
+  - buf.build/googleapis/googleapis
+  - buf.build/grpc-ecosystem/grpc-gateway
+  - buf.build/tejapr/googleapis
+build:
+  roots:
+    - proto

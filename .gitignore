@@ -10,6 +10,13 @@
 # App Binaries.
 bin/*
 
+
+# Generated protobuf files.
+rpc/*
+
+# Documentation files. Use `make docs` to generate
+docs/*
+
 coverage.out
 
 # The 'dev' environment configuration is used by individual developers to set up their local environments.
