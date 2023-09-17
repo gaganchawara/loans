@@ -11,6 +11,11 @@ import (
 	"google.golang.org/grpc"
 )
 
+const (
+	RpcMethodKey = "method"
+	UriKey       = "uri"
+)
+
 // ServerAddresses defines the network addresses for the different server interfaces.
 type ServerAddresses struct {
 	Grpc     string

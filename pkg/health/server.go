@@ -22,11 +22,6 @@ func NewServer(core *Core) *Server {
 	}
 }
 
-// AuthFuncOverride interceptor to override default basic auth authentication
-func (s *Server) AuthFuncOverride(ctx context.Context, fullMethodName string) (context.Context, error) {
-	return ctx, nil
-}
-
 // Check returns service's serving status.
 func (s *Server) Check(ctx context.Context, _ *healthv1.HealthCheckRequest) (*healthv1.HealthCheckResponse, error) {
 	err := s.core.RunHealthCheck(ctx)

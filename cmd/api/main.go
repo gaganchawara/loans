@@ -8,6 +8,12 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/gaganchawara/loans/internal/errorcode"
+
+	ctxkeys "github.com/gaganchawara/loans/internal/constants/ctx_keys"
+
+	interceptors "github.com/gaganchawara/loans/pkg/grpcserver/interceptor"
+
 	"github.com/gaganchawara/loans/internal/boot"
 	"github.com/gaganchawara/loans/pkg/grpcserver"
 	"github.com/gaganchawara/loans/pkg/grpcserver/serverMux"
@@ -86,7 +92,21 @@ func httpHandlerRegisterer(ctx context.Context) grpcserver.RegisterHttpHandlers 
 }
 
 func getServerInterceptors() []grpc.UnaryServerInterceptor {
-	return nil
+	return []grpc.UnaryServerInterceptor{
+		interceptors.UnaryServerBasicAuthInterceptor(
+			[]interceptors.BasicAuthCreds{
+				boot.Config.Auth,
+			}),
+		interceptors.HeaderInterceptor([]string{
+			ctxkeys.RpcMethodKey,
+			ctxkeys.UriKey,
+		}),
+		interceptors.UnaryServerTraceIdInterceptor(),
+		interceptors.UnaryServerGitCommitHashInterceptor(boot.Config.App.GitCommitHash),
+		interceptors.UnaryServerLoggerInterceptor(ctxkeys.AllKeys()),
+		interceptors.UnaryServerGrpcErrorInterceptor(errorcode.ErrorsMap),
+		grpcprometheus.UnaryServerInterceptor,
+	}
 }
 
 func getHttpMiddlewares() []grpcserver.HttpMiddlewares {

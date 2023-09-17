@@ -3,11 +3,13 @@ package config
 import (
 	"github.com/gaganchawara/loans/pkg/db"
 	"github.com/gaganchawara/loans/pkg/grpcserver"
+	interceptors "github.com/gaganchawara/loans/pkg/grpcserver/interceptor"
 )
 
 type Config struct {
-	App App
-	DB  db.Config
+	App  App
+	Auth interceptors.BasicAuthCreds
+	DB   db.Config
 }
 
 type App struct {

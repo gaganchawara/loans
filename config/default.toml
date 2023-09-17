@@ -11,6 +11,10 @@
         Http     = "0.0.0.0:9081"
         Internal = "0.0.0.0:9082"
 
+[Auth]
+    username              = "api"
+    password              = "pass"
+
 [db]
     Dialect               = "mysql"
     Protocol              = "tcp"
