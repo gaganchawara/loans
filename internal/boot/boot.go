@@ -6,6 +6,8 @@ import (
 	"path/filepath"
 	"runtime"
 
+	"github.com/gaganchawara/loans/internal/errorcode"
+
 	"github.com/dlmiddlecote/sqlstats"
 	"github.com/gaganchawara/loans/pkg/db"
 	"github.com/prometheus/client_golang/prometheus"
@@ -19,14 +21,14 @@ import (
 
 var (
 	// Config represents the application configuration.
-	cfg config.Config
+	Config config.Config
 	// DB is the database connection.
 	DB *gorm.DB
 )
 
 // Initialize serves as the universal bootstrapping function, responsible for common
 // initialization routines across various parts of the application.
-func Initialize(ctx context.Context) {
+func Initialize(ctx context.Context) errors.Error {
 	var err error
 	var ierr errors.Error
 
@@ -34,25 +36,28 @@ func Initialize(ctx context.Context) {
 
 	// initializes error packages with Hooks
 	errors.Initialize(logger.ErrorLogger())
-	err = pkgconfig.LoadConfig(getConfigPath(), GetEnv(), &cfg)
+
+	err = pkgconfig.LoadConfig(getConfigPath(), GetEnv(), &Config)
 	if err != nil {
-		panic(err)
+		return errors.New(ctx, errorcode.InternalServerError, err).Report()
 	}
 
 	// Initialize a new database connection.
-	DB, ierr = db.NewDB(ctx, cfg.DB)
+	DB, ierr = db.NewDB(ctx, Config.DB)
 	if ierr != nil {
-		panic(ierr)
+		return errors.New(ctx, errorcode.InternalServerError, err).Report()
 	}
 
 	sqlDB, err := DB.DB()
 	if err != nil {
-		panic(err)
+		return errors.New(ctx, errorcode.InternalServerError, err).Report()
 	}
 
 	// Register a SQL database statistics collector for Prometheus.
-	collector := sqlstats.NewStatsCollector(cfg.DB.URL+"-"+cfg.DB.Name, sqlDB)
+	collector := sqlstats.NewStatsCollector(Config.DB.URL+"-"+Config.DB.Name, sqlDB)
 	prometheus.MustRegister(collector)
+
+	return nil
 }
 
 // getConfigPath returns the path to the configuration directory

@@ -1,6 +1,9 @@
 package config
 
-import "github.com/gaganchawara/loans/pkg/db"
+import (
+	"github.com/gaganchawara/loans/pkg/db"
+	"github.com/gaganchawara/loans/pkg/grpcserver"
+)
 
 type Config struct {
 	App App
@@ -8,11 +11,10 @@ type Config struct {
 }
 
 type App struct {
-	Env             string `toml:"Env"`
-	ServiceName     string `toml:"ServiceName"`
-	Hostname        string `toml:"Hostname"`
-	Port            string `toml:"Port"`
-	ShutdownTimeout int    `toml:"ShutdownTimeout"`
-	ShutdownDelay   int    `toml:"ShutdownDelay"`
-	GitCommitHash   string `toml:"GitCommitHash"`
+	Env             string                     `toml:"Env"`
+	ServiceName     string                     `toml:"ServiceName"`
+	ServerAddresses grpcserver.ServerAddresses `json:"ServerAddresses"`
+	ShutdownTimeout int                        `toml:"ShutdownTimeout"`
+	ShutdownDelay   int                        `toml:"ShutdownDelay"`
+	GitCommitHash   string                     `toml:"GitCommitHash"`
 }

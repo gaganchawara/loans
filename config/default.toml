@@ -6,6 +6,10 @@
     ShutdownTimeout       = 60
     ShutdownDelay         = 10
     GitCommitHash         = "nil"
+    [App.ServerAddresses]
+        Grpc     = "0.0.0.0:9080"
+        Http     = "0.0.0.0:9081"
+        Internal = "0.0.0.0:9082"
 
 [db]
     Dialect               = "mysql"
