@@ -2,11 +2,14 @@ package boot
 
 import (
 	"context"
-	"github.com/gaganchawara/loans/pkg/db"
-	"gorm.io/gorm"
 	"os"
 	"path/filepath"
 	"runtime"
+
+	"github.com/dlmiddlecote/sqlstats"
+	"github.com/gaganchawara/loans/pkg/db"
+	"github.com/prometheus/client_golang/prometheus"
+	"gorm.io/gorm"
 
 	"github.com/gaganchawara/loans/internal/config"
 	pkgconfig "github.com/gaganchawara/loans/pkg/config"
@@ -15,10 +18,14 @@ import (
 )
 
 var (
+	// Config represents the application configuration.
 	cfg config.Config
+	// DB is the database connection.
 	DB *gorm.DB
 )
 
+// Initialize serves as the universal bootstrapping function, responsible for common
+// initialization routines across various parts of the application.
 func Initialize(ctx context.Context) {
 	var err error
 	var ierr errors.Error
@@ -32,22 +39,34 @@ func Initialize(ctx context.Context) {
 		panic(err)
 	}
 
+	// Initialize a new database connection.
 	DB, ierr = db.NewDB(ctx, cfg.DB)
 	if ierr != nil {
 		panic(ierr)
 	}
 
+	sqlDB, err := DB.DB()
+	if err != nil {
+		panic(err)
+	}
+
+	// Register a SQL database statistics collector for Prometheus.
+	collector := sqlstats.NewStatsCollector(cfg.DB.URL+"-"+cfg.DB.Name, sqlDB)
+	prometheus.MustRegister(collector)
 }
 
+// getConfigPath returns the path to the configuration directory
 func getConfigPath() string {
 	return filepath.Join(getRootPath(), "config")
 }
 
+// getRootPath returns the root directory of the application
 func getRootPath() string {
 	_, b, _, _ := runtime.Caller(0)
 	return filepath.Join(filepath.Dir(b), "../..")
 }
 
+// GetEnv retrieves the application's runtime environment.
 func GetEnv() string {
 	environment := os.Getenv("APP_ENV")
 	if environment == "" {

@@ -1,7 +1,4 @@
-// Package db has specific primitives for database config & connections.
-//
-// Usage:
-// - 	E.g. dbpkg.NewDb(&c), where c must implement ConfigReader and default use case is to just use Config struct.
+// Package db contains specific primitives for database configuration and connections.
 package db
 
 import (
@@ -17,6 +14,7 @@ import (
 	"gorm.io/gorm/logger"
 )
 
+// NewDB initializes a new database connection based on the provided configuration.
 func NewDB(ctx context.Context, c Config) (*gorm.DB, errors.Error) {
 	dialect := mysql.Open(fmt.Sprintf(MysqlConnectionDSNFormat, c.Username, c.Password, c.Protocol, c.URL, c.Name))
 
@@ -31,6 +29,7 @@ func NewDB(ctx context.Context, c Config) (*gorm.DB, errors.Error) {
 		return nil, errors.New(ctx, errorcode.InternalServerError, err).Report()
 	}
 
+	// Configure database connection parameters.
 	var dbConn *sql.DB
 	if dbConn, err = db.DB(); err != nil {
 		return nil, errors.New(ctx, errorcode.InternalServerError, err).Report()
@@ -44,9 +43,9 @@ func NewDB(ctx context.Context, c Config) (*gorm.DB, errors.Error) {
 	return db, nil
 }
 
-// getLogLevelByDebugMode return logger log level based on debug mode.
-// If app db is in debug mode, make log level as info
-// Default log level for gorm db is warning, overriding that by this method.
+// getLogLevelByDebugMode returns the logger log level based on the debug mode.
+// If the application's database is in debug mode, it sets the log level to info.
+// The default log level for GORM DB is warning, which can be overridden by this method.
 func getLogLevelByDebugMode(debug bool) logger.LogLevel {
 	if debug == false {
 		return logger.Silent

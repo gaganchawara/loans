@@ -3,12 +3,12 @@ package db
 import "time"
 
 const (
-	// MysqlConnectionDSNFormat is mysql connection path format for gorm.
+	// MysqlConnectionDSNFormat is the MySQL connection DSN format for gorm.
 	// E.g. app:password@tcp(localhost:3306)/app?charset=utf8&parseTime=True&loc=Local
 	MysqlConnectionDSNFormat = "%s:%s@%s(%s)/%s?charset=utf8&parseTime=True&loc=Local"
 )
 
-// Config struct holds db configurations and implements ConfigReader.
+// Config struct holds database configuration parameters.
 type Config struct {
 	Dialect               string        `toml:"Dialect"`
 	Protocol              string        `toml:"Protocol"`

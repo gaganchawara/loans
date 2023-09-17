@@ -16,6 +16,7 @@ const (
 )
 
 func init() {
+	// Configure the default logger settings.
 	logrus.SetLevel(logrus.DebugLevel)
 	// Log as JSON instead of the default ASCII formatter.
 	logrus.SetFormatter(&logrus.JSONFormatter{
@@ -25,6 +26,7 @@ func init() {
 	logrus.AddHook(&StackTraceHook{})
 }
 
+// Get retrieves a logger instance associated with the provided context.
 func Get(ctx context.Context) *logrus.Entry {
 	if ctx == nil {
 		return newStdLogger()
@@ -38,10 +40,12 @@ func Get(ctx context.Context) *logrus.Entry {
 	}
 }
 
+// newStdLogger creates a new standard logger instance.
 func newStdLogger() *logrus.Entry {
 	return logrus.NewEntry(logrus.StandardLogger())
 }
 
+// ErrorLogger returns a function that logs errors along with additional error information.
 func ErrorLogger() func(error errors.Error) {
 	return func(error errors.Error) {
 		data := map[string]interface{}{}
