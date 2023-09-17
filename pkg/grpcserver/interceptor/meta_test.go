@@ -2,9 +2,10 @@ package interceptors
 
 import (
 	"context"
+	"testing"
+
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
-	"testing"
 )
 
 func TestHeaderInterceptor(t *testing.T) {
