@@ -19,13 +19,13 @@ func NewServer(service interfaces.Service) *server {
 	}
 }
 
-func (s *server) GetLoans(ctx context.Context, request *loansv1.GetLoansRequest) (*loansv1.GetLoansResponse, error) {
+func (s *server) GetLoans(ctx context.Context, request *loansv1.GetLoansRequest) (*loansv1.LoansResponse, error) {
 	span, ctx := ot.StartSpanFromContext(ctx, "loan.server.GetLoans")
 	defer span.Finish()
 
-	if loan, ierr := s.service.GetLoanById(ctx, request.LoanId); ierr != nil {
+	if agg, ierr := s.service.GetLoanAggById(ctx, request.LoanId); ierr != nil {
 		return nil, ierr
 	} else {
-		return &loansv1.GetLoansResponse{Loan: loan.Proto()}, nil
+		return agg.Proto(), nil
 	}
 }

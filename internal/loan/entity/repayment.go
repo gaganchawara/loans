@@ -1,6 +1,7 @@
 package entity
 
 import (
+	loansv1 "github.com/gaganchawara/loans/rpc/loans/v1"
 	"time"
 
 	"github.com/gaganchawara/loans/internal/enums/repaymentstatus"
@@ -18,6 +19,20 @@ type Repayment struct {
 
 const TableRepayment = "repayment"
 
-func (model *Repayment) TableName() string {
+func (e *Repayment) TableName() string {
 	return TableRepayment
+}
+
+func (e *Repayment) Proto() *loansv1.Repayment {
+	return &loansv1.Repayment{
+		Id:         e.Id,
+		LoanId:     e.LoanId,
+		Amount:     e.Amount,
+		PaidAmount: e.PaidAmount,
+		Status:     e.Status.String(),
+		DueDate:    e.DueDate.Unix(),
+		CreatedAt:  e.CreatedAt.Unix(),
+		UpdatedAt:  e.UpdatedAt.Unix(),
+		DeletedAt:  e.DeletedAt.Unix(),
+	}
 }

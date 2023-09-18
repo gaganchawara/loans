@@ -10,8 +10,9 @@ message GetLoansRequest {
   string loan_id = 1;
 }
 
-message GetLoansResponse {
+message LoansResponse {
   Loan loan = 1;
+  repeated Repayment repayments = 2;
 }
 
 message Loan {
@@ -25,4 +26,16 @@ message Loan {
   int64 created_at = 8;
   int64 updated_at = 9;
   int64 deleted_at = 10;
+}
+
+message Repayment {
+  string id = 1;
+  string loan_id = 2;
+  int64 amount = 3;
+  int64 paid_amount = 4;
+  string status = 5;
+  int64 due_date = 6;
+  int64 created_at = 7;
+  int64 updated_at = 8;
+  int64 deleted_at = 9;
 }

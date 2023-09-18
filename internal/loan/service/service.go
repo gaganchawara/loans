@@ -2,8 +2,8 @@ package service
 
 import (
 	"context"
+	"github.com/gaganchawara/loans/internal/loan/aggregate"
 
-	"github.com/gaganchawara/loans/internal/loan/entity"
 	"github.com/gaganchawara/loans/internal/loan/interfaces"
 	"github.com/gaganchawara/loans/pkg/errors"
 )
@@ -18,6 +18,6 @@ func NewService(repo interfaces.Repository) interfaces.Service {
 	}
 }
 
-func (s *service) GetLoanById(ctx context.Context, loanId string) (*entity.Loan, errors.Error) {
-	return s.repo.LoadLoan(ctx, loanId)
+func (s *service) GetLoanAggById(ctx context.Context, loanId string) (*aggregate.LoanAgg, errors.Error) {
+	return s.repo.LoadLoanAgg(ctx, loanId)
 }
