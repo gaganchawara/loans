@@ -9,7 +9,11 @@ import (
 )
 
 func TestHeaderInterceptor(t *testing.T) {
-	headerTags := []string{"tag1", "tag2"}
+	headerTags := map[string]string{
+		"tag1": "tag1",
+		"tag-2": "tag2",
+	}
+
 	interceptor := HeaderInterceptor(headerTags)
 
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
@@ -32,10 +36,14 @@ func TestHeaderInterceptor(t *testing.T) {
 }
 
 func Test_extractAndSetMetadataValues(t *testing.T) {
-	headerTags := []string{"tag1", "tag2"}
+	headerTags := map[string]string{
+		"tag1": "tag1",
+		"tag-2": "tag2",
+	}
 
 	// Create a context with incoming metadata.
-	ctx := metadata.NewIncomingContext(context.Background(), metadata.Pairs("tag1", "value1", "tag2", "value2", "tag3", "value3"))
+	ctx := metadata.NewIncomingContext(context.Background(),
+		metadata.Pairs("tag1", "value1", "tag-2", "value2", "tag3", "value3"))
 
 	// Call the function to extract and set metadata values in the context.
 	ctx = extractAndSetMetadataValues(ctx, headerTags)

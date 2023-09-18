@@ -11,7 +11,7 @@ func (j *jLogger) Infof(msg string, args ...interface{}) {
 }
 
 func (j *jLogger) Debugf(msg string, args ...interface{}) {
-	j.logger.Debugf(msg, args)
+	j.logger.Debugf(msg, args...)
 }
 
 func (j *jLogger) Error(msg string) {

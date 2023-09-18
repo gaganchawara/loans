@@ -114,10 +114,7 @@ func getServerInterceptors() []grpc.UnaryServerInterceptor {
 			[]interceptors.BasicAuthCreds{
 				boot.Config.Auth,
 			}),
-		interceptors.HeaderInterceptor([]string{
-			ctxkeys.RpcMethodKey,
-			ctxkeys.UriKey,
-		}),
+		interceptors.HeaderInterceptor(ctxkeys.HeaderKeyMap()),
 		interceptors.UnaryServerTraceIdInterceptor(),
 		interceptors.UnaryServerGitCommitHashInterceptor(boot.Config.App.GitCommitHash),
 		interceptors.UnaryServerLoggerInterceptor(ctxkeys.AllKeys()),
