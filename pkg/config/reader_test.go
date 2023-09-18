@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"path/filepath"
 	"runtime"
 	"testing"
@@ -18,7 +17,6 @@ func TestLoadConfig(t *testing.T) {
 	env := "test"
 	expectedValue := "test_value"
 
-	fmt.Println(filePath)
 	// Load the configuration
 	err := LoadConfig(filePath, env, &cfg)
 	if err != nil {

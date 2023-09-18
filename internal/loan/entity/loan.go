@@ -3,6 +3,8 @@ package entity
 import (
 	"time"
 
+	loansv1 "github.com/gaganchawara/loans/rpc/loans/v1"
+
 	"github.com/gaganchawara/loans/internal/enums/loanstatus"
 )
 
@@ -19,6 +21,23 @@ type Loan struct {
 
 const TableLoan = "loan"
 
-func (model *Loan) TableName() string {
+func (e *Loan) TableName() string {
 	return TableLoan
+}
+
+func (e *Loan) Proto() *loansv1.Loan {
+	var disbursedAt = e.DisbursedAt.Unix()
+
+	return &loansv1.Loan{
+		Id:          e.Id,
+		UserId:      e.UserId,
+		Amount:      e.Amount,
+		Term:        e.Term,
+		Status:      e.Status.String(),
+		ApprovedBy:  &e.ApprovedBy,
+		DisbursedAt: &disbursedAt,
+		CreatedAt:   e.CreatedAt.Unix(),
+		UpdatedAt:   e.UpdatedAt.Unix(),
+		DeletedAt:   e.DeletedAt.Unix(),
+	}
 }

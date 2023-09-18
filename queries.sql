@@ -10,7 +10,7 @@ CREATE TABLE loan
     disbursed_at BIGINT      NOT NULL,
     created_at   BIGINT      NOT NULL,
     updated_at   BIGINT      NOT NULL,
-    deleted_at   BIGINT,
+    deleted_at   BIGINT
 );
 
 -- create repayments table query

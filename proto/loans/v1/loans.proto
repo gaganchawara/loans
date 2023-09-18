@@ -7,7 +7,7 @@ option go_package = "loans/v1;loansv1";
 import "google/api/annotations.proto";
 
 message GetLoansRequest {
-  string loanId = 1;
+  string loan_id = 1;
 }
 
 message GetLoansResponse {

@@ -2,16 +2,17 @@ package main
 
 import (
 	"context"
-	"github.com/gaganchawara/loans/internal/loan/interfaces"
-	"github.com/gaganchawara/loans/internal/loan/repository"
-	loanserver "github.com/gaganchawara/loans/internal/loan/server"
-	"github.com/gaganchawara/loans/internal/loan/service"
-	loansv1 "github.com/gaganchawara/loans/rpc/loans/v1"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/gaganchawara/loans/internal/loan/interfaces"
+	"github.com/gaganchawara/loans/internal/loan/repository"
+	loanserver "github.com/gaganchawara/loans/internal/loan/server"
+	"github.com/gaganchawara/loans/internal/loan/service"
+	loansv1 "github.com/gaganchawara/loans/rpc/loans/v1"
 
 	"github.com/gaganchawara/loans/pkg/errors"
 

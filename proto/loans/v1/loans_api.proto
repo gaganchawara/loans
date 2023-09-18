@@ -11,6 +11,6 @@ import "loans/v1/loans.proto";
 service LoansAPI {
   // Check returns HealthCheckResponse for the requested service.
   rpc GetLoans(GetLoansRequest) returns (GetLoansResponse) {
-      option (google.api.http) = { get:"/v1/loans"  };
+      option (google.api.http) = { get:"/v1/loans/{loan_id}"  };
   }
 }

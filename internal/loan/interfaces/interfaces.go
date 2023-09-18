@@ -8,6 +8,7 @@ import (
 )
 
 type Service interface {
+	GetLoanById(ctx context.Context, loanId string) (*entity.Loan, errors.Error)
 }
 
 type Repository interface {

@@ -1,7 +1,9 @@
 package logger
 
 import (
+	"bytes"
 	"runtime/debug"
+	"strings"
 
 	"github.com/sirupsen/logrus"
 )
@@ -14,9 +16,12 @@ func (hook *StackTraceHook) Levels() []logrus.Level {
 	return []logrus.Level{logrus.PanicLevel, logrus.FatalLevel, logrus.ErrorLevel}
 }
 
-// Fire captures and attaches a stack trace to the log entry.
+// Fire captures and attaches the stack trace with the first 27 lines removed to the log entry.
 func (hook *StackTraceHook) Fire(entry *logrus.Entry) error {
 	stack := debug.Stack()
-	entry.Data["stack_trace"] = string(stack)
+	stack = bytes.ReplaceAll(stack, []byte("\t"), []byte("")) // Remove all tabs
+	stackArray := strings.Split(string(stack), "\n")
+	stackArray = stackArray[16:]
+	entry.Data["stack_trace"] = stackArray
 	return nil
 }

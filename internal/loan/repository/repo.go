@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+
 	"github.com/gaganchawara/loans/internal/loan/interfaces"
 
 	"github.com/gaganchawara/loans/internal/errorcode"
@@ -43,7 +44,7 @@ func (r repo) LoadLoan(ctx context.Context, loanId string) (*entity.Loan, errors
 	q := r.db.Table(loan.TableName()).Where("id = ?", loanId).Where("deleted_at IS NULL").First(&loan)
 	if q.Error != nil {
 		if q.Error == gorm.ErrRecordNotFound {
-			return nil, nil
+			return nil, errors.New(ctx, errorcode.NotFoundError, q.Error).Report()
 		} else {
 			return nil, errors.New(ctx, errorcode.InternalServerError, q.Error).Report()
 		}
