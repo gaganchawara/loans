@@ -1,8 +1,9 @@
 package entity
 
 import (
-	"github.com/gaganchawara/loans/internal/enums/repaymentstatus"
 	"time"
+
+	"github.com/gaganchawara/loans/internal/enums/repaymentstatus"
 )
 
 type Repayment struct {

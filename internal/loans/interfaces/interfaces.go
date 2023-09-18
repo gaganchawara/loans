@@ -2,6 +2,7 @@ package interfaces
 
 import (
 	"context"
+
 	"github.com/gaganchawara/loans/internal/loans/entity"
 	"github.com/gaganchawara/loans/pkg/errors"
 )

@@ -27,8 +27,8 @@ func Initialize(h ...Hook) {
 	hooks = h
 }
 
-// Err is a concrete implementation of the Error interface.
-type Err struct {
+// e is a concrete implementation of the Error interface.
+type e struct {
 	ctx  context.Context
 	code string
 	err  error
@@ -40,7 +40,7 @@ func New(ctx context.Context, code string, err error) Error {
 	if err == nil {
 		err = errors.New(code)
 	}
-	return &Err{
+	return &e{
 		ctx:  ctx,
 		code: code,
 		err:  err,
@@ -49,14 +49,14 @@ func New(ctx context.Context, code string, err error) Error {
 }
 
 // WithField adds a key-value pair to the error's data.
-func (e *Err) WithField(key, value string) Error {
+func (e *e) WithField(key, value string) Error {
 	e.data[key] = value
 
 	return e
 }
 
 // WithData adds multiple key-value pairs to the error's data.
-func (e *Err) WithData(data map[string]string) Error {
+func (e *e) WithData(data map[string]string) Error {
 	for k, v := range data {
 		e.data[k] = v
 	}
@@ -65,7 +65,7 @@ func (e *Err) WithData(data map[string]string) Error {
 }
 
 // Report executes registered error hooks.
-func (e *Err) Report() Error {
+func (e *e) Report() Error {
 	for _, hook := range hooks {
 		hook(e)
 	}
@@ -74,12 +74,12 @@ func (e *Err) Report() Error {
 }
 
 // Data returns the error's associated data.
-func (e *Err) Data() map[string]string {
+func (e *e) Data() map[string]string {
 	return e.data
 }
 
 // Error returns the error message or code.
-func (e *Err) Error() string {
+func (e *e) Error() string {
 	if e.err != nil {
 		return e.err.Error()
 	}
@@ -88,17 +88,17 @@ func (e *Err) Error() string {
 }
 
 // Unwrap returns the wrapped error, if any.
-func (e *Err) Unwrap() error {
+func (e *e) Unwrap() error {
 	return e.err
 }
 
 // Code returns the error code.
-func (e *Err) Code() string {
+func (e *e) Code() string {
 	return e.code
 }
 
 // Context returns the associated context, or a default context if none is set.
-func (e *Err) Context() context.Context {
+func (e *e) Context() context.Context {
 	if e.ctx == nil {
 		e.ctx = context.Background()
 	}
