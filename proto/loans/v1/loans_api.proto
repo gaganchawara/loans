@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package loans.v1;
+
+option go_package = "loans/v1;loansv1";
+
+import "google/api/annotations.proto";
+import "loans/v1/loans.proto";
+
+// LoansAPI defines the loans service APIs.
+service LoansAPI {
+  // Check returns HealthCheckResponse for the requested service.
+  rpc GetLoans(GetLoansRequest) returns (GetLoansResponse) {
+      option (google.api.http) = { get:"/v1/loans"  };
+  }
+}

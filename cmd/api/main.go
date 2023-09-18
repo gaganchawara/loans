@@ -2,6 +2,11 @@ package main
 
 import (
 	"context"
+	"github.com/gaganchawara/loans/internal/loan/interfaces"
+	"github.com/gaganchawara/loans/internal/loan/repository"
+	loanserver "github.com/gaganchawara/loans/internal/loan/server"
+	"github.com/gaganchawara/loans/internal/loan/service"
+	loansv1 "github.com/gaganchawara/loans/rpc/loans/v1"
 	"log"
 	"net/http"
 	"os"
@@ -39,11 +44,13 @@ func main() {
 	}
 
 	healthCore := health.NewCore(boot.DB)
-	healthServer := health.NewServer(healthCore)
+
+	loansRepo := repository.NewRepository(boot.DB)
+	loansSvc := service.NewService(loansRepo)
 
 	server, ierr := grpcserver.NewServer(ctx,
 		boot.Config.App.ServerAddresses,
-		grpcServerRegisterer(healthServer),
+		grpcServerRegisterer(healthCore, loansSvc),
 		httpHandlerRegisterer(ctx),
 		getServerInterceptors(),
 		serverMux.DefaultServerMux(),
@@ -76,9 +83,10 @@ func main() {
 	}
 }
 
-func grpcServerRegisterer(healthServer *health.Server) grpcserver.RegisterGrpcHandlers {
+func grpcServerRegisterer(healthCore *health.Core, loansSvc interfaces.Service) grpcserver.RegisterGrpcHandlers {
 	return func(grpcServer *grpc.Server) error {
-		healthv1.RegisterHealthCheckAPIServer(grpcServer, healthServer)
+		healthv1.RegisterHealthCheckAPIServer(grpcServer, health.NewServer(healthCore))
+		loansv1.RegisterLoansAPIServer(grpcServer, loanserver.NewServer(loansSvc))
 
 		return nil
 	}
@@ -87,6 +95,10 @@ func grpcServerRegisterer(healthServer *health.Server) grpcserver.RegisterGrpcHa
 func httpHandlerRegisterer(ctx context.Context) grpcserver.RegisterHttpHandlers {
 	return func(mux *runtime.ServeMux, address string) error {
 		if err := healthv1.RegisterHealthCheckAPIHandlerFromEndpoint(ctx, mux, address,
+			[]grpc.DialOption{grpc.WithInsecure()}); err != nil {
+			return err
+		}
+		if err := loansv1.RegisterLoansAPIHandlerFromEndpoint(ctx, mux, address,
 			[]grpc.DialOption{grpc.WithInsecure()}); err != nil {
 			return err
 		}

@@ -2,9 +2,10 @@ package repository
 
 import (
 	"context"
+	"github.com/gaganchawara/loans/internal/loan/interfaces"
 
 	"github.com/gaganchawara/loans/internal/errorcode"
-	"github.com/gaganchawara/loans/internal/loans/entity"
+	"github.com/gaganchawara/loans/internal/loan/entity"
 	"github.com/gaganchawara/loans/pkg/errors"
 	"gorm.io/gorm"
 )
@@ -13,9 +14,7 @@ type repo struct {
 	db *gorm.DB
 }
 
-type Repository interface{}
-
-func NewRepository(db *gorm.DB) Repository {
+func NewRepository(db *gorm.DB) interfaces.Repository {
 	return &repo{
 		db: db,
 	}
