@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"sync"
 
+	ot "github.com/opentracing/opentracing-go"
+
 	"gorm.io/gorm"
 )
 
@@ -25,6 +27,9 @@ func NewCore(db *gorm.DB) *Core {
 
 // RunHealthCheck runs various server checks and returns true if all individual components are working fine.
 func (c *Core) RunHealthCheck(ctx context.Context) error {
+	span, ctx := ot.StartSpanFromContext(ctx, "health.core.HealthCheck")
+	defer span.Finish()
+
 	c.mutex.RLock()
 	defer c.mutex.RUnlock()
 	if !c.isHealthy {
@@ -45,6 +50,9 @@ func (c *Core) RunHealthCheck(ctx context.Context) error {
 
 // Ping checks whether the app is able to receive requests
 func (c *Core) Ping(ctx context.Context) error {
+	span, ctx := ot.StartSpanFromContext(ctx, "health.core.Ping")
+	defer span.Finish()
+
 	c.mutex.RLock()
 	defer c.mutex.RUnlock()
 	if !c.isHealthy {

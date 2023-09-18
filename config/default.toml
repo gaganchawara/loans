@@ -29,3 +29,7 @@
     ConnectionMaxLifetime = 3
     ConnectionMaxIdleTime = 3
     DebugMode             = true
+
+[Tracing]
+    hostName              = "localhost"
+    jaegerPort            = "6831"

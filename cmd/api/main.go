@@ -110,11 +110,10 @@ func getServerInterceptors() []grpc.UnaryServerInterceptor {
 		interceptors.UnaryServerLoggerInterceptor(ctxkeys.AllKeys()),
 		interceptors.UnaryServerGrpcErrorInterceptor(errorcode.ErrorsMap),
 		grpcprometheus.UnaryServerInterceptor,
-		grpcrecovery.UnaryServerInterceptor(grpcrecovery.WithRecoveryHandlerContext(func(ctx context.Context,
-			p interface{},
-		) (err error) {
-			return errors.New(ctx, errorcode.InternalServerError, err).Report()
-		})),
+		grpcrecovery.UnaryServerInterceptor(grpcrecovery.WithRecoveryHandlerContext(
+			func(ctx context.Context, p interface{}) (err error) {
+				return errors.New(ctx, errorcode.InternalServerError, err).Report()
+			})),
 	}
 }
 

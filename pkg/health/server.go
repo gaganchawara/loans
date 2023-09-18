@@ -3,6 +3,8 @@ package health
 import (
 	"context"
 
+	ot "github.com/opentracing/opentracing-go"
+
 	"github.com/gaganchawara/loans/internal/errorcode"
 	"github.com/gaganchawara/loans/pkg/errors"
 
@@ -24,6 +26,9 @@ func NewServer(core *Core) *Server {
 
 // Check returns service's serving status.
 func (s *Server) Check(ctx context.Context, _ *healthv1.HealthCheckRequest) (*healthv1.HealthCheckResponse, error) {
+	span, ctx := ot.StartSpanFromContext(ctx, "health.server.Check")
+	defer span.Finish()
+
 	err := s.core.RunHealthCheck(ctx)
 	if err != nil {
 		return &healthv1.HealthCheckResponse{ServingStatus: healthv1.HealthCheckResponse_SERVING_STATUS_NOT_SERVING},
@@ -34,6 +39,9 @@ func (s *Server) Check(ctx context.Context, _ *healthv1.HealthCheckRequest) (*he
 }
 
 func (s *Server) Ping(ctx context.Context, _ *healthv1.HealthCheckRequest) (*healthv1.HealthCheckResponse, error) {
+	span, ctx := ot.StartSpanFromContext(ctx, "health.server.Ping")
+	defer span.Finish()
+
 	err := s.core.Ping(ctx)
 	if err != nil {
 		return &healthv1.HealthCheckResponse{ServingStatus: healthv1.HealthCheckResponse_SERVING_STATUS_NOT_SERVING},

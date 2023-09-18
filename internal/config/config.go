@@ -4,12 +4,14 @@ import (
 	"github.com/gaganchawara/loans/pkg/db"
 	"github.com/gaganchawara/loans/pkg/grpcserver"
 	interceptors "github.com/gaganchawara/loans/pkg/grpcserver/interceptor"
+	"github.com/gaganchawara/loans/pkg/tracing"
 )
 
 type Config struct {
-	App  App
-	Auth interceptors.BasicAuthCreds
-	DB   db.Config
+	App     App
+	Auth    interceptors.BasicAuthCreds
+	DB      db.Config
+	Tracing tracing.Config
 }
 
 type App struct {

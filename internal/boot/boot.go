@@ -6,6 +6,8 @@ import (
 	"path/filepath"
 	"runtime"
 
+	"github.com/gaganchawara/loans/pkg/tracing"
+
 	"github.com/gaganchawara/loans/internal/errorcode"
 
 	"github.com/dlmiddlecote/sqlstats"
@@ -42,6 +44,9 @@ func Initialize(ctx context.Context) errors.Error {
 		return errors.New(ctx, errorcode.InternalServerError, err).Report()
 	}
 
+	Config.Tracing.ServiceName = Config.App.ServiceName
+	Config.Tracing.Env = Config.App.Env
+
 	// Initialize a new database connection.
 	DB, ierr = db.NewDB(ctx, Config.DB)
 	if ierr != nil {
@@ -56,6 +61,10 @@ func Initialize(ctx context.Context) errors.Error {
 	// Register a SQL database statistics collector for Prometheus.
 	collector := sqlstats.NewStatsCollector(Config.DB.URL+"-"+Config.DB.Name, sqlDB)
 	prometheus.MustRegister(collector)
+
+	if ierr = tracing.InitTracer(ctx, Config.Tracing, logger.Get(ctx)); ierr != nil {
+		return ierr
+	}
 
 	return nil
 }
