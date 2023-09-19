@@ -13,7 +13,6 @@ import (
 // GetAccountType retrieves the account type from the context and returns it.
 // If the account type is not available or cannot be parsed, it returns an error.
 func GetAccountType(ctx context.Context) (accounttype.Type, errors.Error) {
-	fmt.Println(ctx)
 	accountTypeStr, ok := ctx.Value(ctxkeys.AccountType).(string)
 	if !ok {
 		return accounttype.Type(0), errors.New(ctx, errorcode.AuthenticationError,

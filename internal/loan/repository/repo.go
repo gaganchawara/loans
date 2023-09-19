@@ -3,6 +3,8 @@ package repository
 import (
 	"context"
 
+	ot "github.com/opentracing/opentracing-go"
+
 	"github.com/gaganchawara/loans/internal/loan/aggregate"
 
 	"github.com/gaganchawara/loans/internal/loan/interfaces"
@@ -27,6 +29,9 @@ func NewRepository(db *gorm.DB) interfaces.Repository {
 
 // SaveLoanAgg creates a new loan record in the database.
 func (r repo) SaveLoanAgg(ctx context.Context, loanAgg *aggregate.LoanAgg) errors.Error {
+	span, ctx := ot.StartSpanFromContext(ctx, "loan.repo.SaveLoanAgg")
+	defer span.Finish()
+
 	if ierr := r.SaveLoan(ctx, loanAgg.Loan); ierr != nil {
 		return ierr
 	}
@@ -42,6 +47,9 @@ func (r repo) SaveLoanAgg(ctx context.Context, loanAgg *aggregate.LoanAgg) error
 
 // SaveLoan updates existing record in the loans table and creates a new one if it does not exist.
 func (r repo) SaveLoan(ctx context.Context, loan *entity.Loan) errors.Error {
+	span, ctx := ot.StartSpanFromContext(ctx, "loan.repo.SaveLoan")
+	defer span.Finish()
+
 	q := r.db.Table(loan.TableName()).Save(loan)
 	if q.Error != nil {
 		return errors.New(ctx, errorcode.InternalServerError, q.Error).Report()
@@ -52,6 +60,9 @@ func (r repo) SaveLoan(ctx context.Context, loan *entity.Loan) errors.Error {
 
 // SaveRepayment updates existing record in the repayment table and creates a new one if it does not exist.
 func (r repo) SaveRepayment(ctx context.Context, repayment *entity.Repayment) errors.Error {
+	span, ctx := ot.StartSpanFromContext(ctx, "loan.repo.SaveRepayment")
+	defer span.Finish()
+
 	q := r.db.Table(repayment.TableName()).Save(repayment)
 	if q.Error != nil {
 		return errors.New(ctx, errorcode.InternalServerError, q.Error).Report()
@@ -62,6 +73,9 @@ func (r repo) SaveRepayment(ctx context.Context, repayment *entity.Repayment) er
 
 // LoadLoanAgg loads a loan aggregate, including the loan details and associated repayments.
 func (r repo) LoadLoanAgg(ctx context.Context, loanId string) (*aggregate.LoanAgg, errors.Error) {
+	span, ctx := ot.StartSpanFromContext(ctx, "loan.repo.LoadLoanAgg")
+	defer span.Finish()
+
 	loan, ierr := r.LoadLoan(ctx, loanId)
 	if ierr != nil {
 		return nil, ierr
@@ -80,6 +94,9 @@ func (r repo) LoadLoanAgg(ctx context.Context, loanId string) (*aggregate.LoanAg
 
 // LoadLoan loads a loan by its ID.
 func (r repo) LoadLoan(ctx context.Context, loanId string) (*entity.Loan, errors.Error) {
+	span, ctx := ot.StartSpanFromContext(ctx, "loan.repo.LoadLoan")
+	defer span.Finish()
+
 	var loan entity.Loan
 	q := r.db.Table(loan.TableName()).Where("id = ?", loanId).Where("deleted_at IS NULL").First(&loan)
 	if q.Error != nil {
@@ -95,6 +112,9 @@ func (r repo) LoadLoan(ctx context.Context, loanId string) (*entity.Loan, errors
 
 // LoadRepaymentsByLoanID loads all repayments associated with a loan by loan ID.
 func (r repo) LoadRepaymentsByLoanID(ctx context.Context, loanId string) ([]*entity.Repayment, errors.Error) {
+	span, ctx := ot.StartSpanFromContext(ctx, "loan.repo.LoadRepaymentsByLoanID")
+	defer span.Finish()
+
 	var repayments []*entity.Repayment
 	q := r.db.Table(entity.TableRepayment).Where("loan_id = ?", loanId).Where("deleted_at IS NULL").
 		Find(&repayments)
@@ -111,6 +131,9 @@ func (r repo) LoadRepaymentsByLoanID(ctx context.Context, loanId string) ([]*ent
 
 // LoadRepayment loads a repayment by its ID.
 func (r repo) LoadRepayment(ctx context.Context, id string) (*entity.Repayment, errors.Error) {
+	span, ctx := ot.StartSpanFromContext(ctx, "loan.repo.LoadRepayment")
+	defer span.Finish()
+
 	var repayment entity.Repayment
 	q := r.db.Table(repayment.TableName()).Where("id = ?", id).Where("deleted_at IS NULL").
 		First(&repayment)
