@@ -18,6 +18,7 @@ var UserRouteAccess = map[string]bool{
 	"/loans.v1.LoansAPI/GetLoans":    true,
 	"/loans.v1.LoansAPI/ApplyLoan":   true,
 	"/loans.v1.LoansAPI/ApproveLoan": false,
+	"/loans.v1.LoansAPI/RejectLoan":  false,
 }
 
 // UserAccessInterceptor is a gRPC interceptor that checks whether a user has access

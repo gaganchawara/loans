@@ -15,6 +15,10 @@ message ApproveLoanRequest {
   string loan_id = 1;
 }
 
+message RejectLoanRequest {
+  string loan_id = 1;
+}
+
 message GetLoansRequest {
   string loan_id = 1;
 }

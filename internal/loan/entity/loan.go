@@ -4,6 +4,8 @@ import (
 	"context"
 	"time"
 
+	"github.com/gaganchawara/loans/internal/iam"
+
 	"github.com/gaganchawara/loans/pkg/errors"
 	"github.com/gaganchawara/loans/pkg/utils"
 
@@ -37,6 +39,25 @@ func NewLoanEntity(_ context.Context) (*Loan, errors.Error) {
 
 func (e *Loan) TableName() string {
 	return TableLoan
+}
+
+func (e *Loan) MarkApproved(ctx context.Context) errors.Error {
+	adminId, ierr := iam.GetAdminId(ctx)
+	if ierr != nil {
+		return ierr
+	}
+
+	e.ApprovedBy = adminId
+	now := time.Now()
+	e.DisbursedAt = &now
+
+	return nil
+}
+
+func (e *Loan) MarkRejected(_ context.Context) errors.Error {
+	e.Status = loanstatus.Rejected
+
+	return nil
 }
 
 func (e *Loan) Proto() *loansv1.Loan {

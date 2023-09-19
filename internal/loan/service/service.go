@@ -4,6 +4,8 @@ import (
 	"context"
 	"time"
 
+	"github.com/gaganchawara/loans/internal/enums/loanstatus"
+
 	"github.com/gaganchawara/loans/internal/iam"
 
 	"github.com/gaganchawara/loans/internal/loan/aggregate"
@@ -51,6 +53,7 @@ func (s service) ApproveLoan(ctx context.Context, req *loansv1.ApproveLoanReques
 	loan.ApprovedBy = adminId
 	now := time.Now()
 	loan.DisbursedAt = &now
+	loan.Status = loanstatus.Approved
 
 	loanAgg, ierr := factory.BuildRepayments(ctx, loan)
 	if ierr != nil {
@@ -63,6 +66,22 @@ func (s service) ApproveLoan(ctx context.Context, req *loansv1.ApproveLoanReques
 	}
 
 	return loanAgg, nil
+}
+
+func (s service) RejectLoan(ctx context.Context, req *loansv1.RejectLoanRequest) (*aggregate.LoanAgg, errors.Error) {
+	agg, ierr := s.repo.LoadLoanAgg(ctx, req.LoanId)
+	if ierr != nil {
+		return nil, ierr
+	}
+
+	agg.Loan.Status = loanstatus.Rejected
+
+	ierr = s.repo.SaveLoanAgg(ctx, agg)
+	if ierr != nil {
+		return nil, ierr
+	}
+
+	return agg, nil
 }
 
 func (s service) GetLoanAggById(ctx context.Context, loanId string) (*aggregate.LoanAgg, errors.Error) {

@@ -13,6 +13,9 @@ service LoansAPI {
   rpc ApplyLoan(ApplyLoanRequest) returns (LoansResponse) {
       option (google.api.http) = { post:"/v1/loans/apply" body:"*"};
   }
+  rpc RejectLoan(RejectLoanRequest) returns (LoansResponse) {
+      option (google.api.http) = { post:"/v1/loans/reject" body:"*"};
+  }
   rpc ApproveLoan(ApproveLoanRequest) returns (LoansResponse) {
         option (google.api.http) = { post:"/v1/loans/approve" body:"*"};
   }

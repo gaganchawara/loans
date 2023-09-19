@@ -13,6 +13,7 @@ type Type uint8
 
 const (
 	Pending Type = iota + 1
+	Rejected
 	Approved
 	PartiallyPaid
 	Paid
@@ -20,6 +21,7 @@ const (
 
 var typeToString = map[Type]string{
 	Pending:       "PENDING",
+	Rejected:      "REJECTED",
 	Approved:      "APPROVED",
 	PartiallyPaid: "PARTIALLY_PAID",
 	Paid:          "PAID",
@@ -27,6 +29,7 @@ var typeToString = map[Type]string{
 
 var typeFromString = map[string]Type{
 	"PENDING":        Pending,
+	"REJECTED":       Rejected,
 	"APPROVED":       Approved,
 	"PARTIALLY_PAID": PartiallyPaid,
 	"PAID":           Paid,
