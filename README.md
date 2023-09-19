@@ -72,6 +72,20 @@ make go-build-api && ./bin/api
 ```
 This command will build the service binary and run the service
 
+## Testing
+
+### Dependencies
+```
+make mock-deps
+```
+This command will generate required mocks for the UTs to run
+
+### running tests
+```
+make test-unit
+```
+This command will run unit tests and show the output in terminal
+
 ## Prerequisites
 A basic understanding of the following technologies can be beneficial for understanding and working with this code:
 
