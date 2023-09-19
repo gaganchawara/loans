@@ -93,15 +93,15 @@ func ValidateRejectLoanAgg(ctx context.Context, e *entity.Loan) errors.Error {
 
 func ValidateRepayLoanAgg(ctx context.Context, agg *aggregate.LoanAgg, req *loansv1.RepayLoanRequest) errors.Error {
 	if agg.Loan.Status == loanstatus.Paid {
-		return errors.New(ctx, errorcode.BadRequestError,
+		return errors.New(ctx, errorcode.ValidationError,
 			fmt.Errorf("loan is already paid")).Report()
 	} else if govalidator.IsIn(agg.Loan.Status.String(), loanstatus.Rejected.String(), loanstatus.Pending.String()) {
-		return errors.New(ctx, errorcode.BadRequestError,
+		return errors.New(ctx, errorcode.ValidationError,
 			fmt.Errorf("payment not allowed for loan in this state")).Report()
 	}
 
 	if agg.GetTotalDueAmount() < req.Amount {
-		return errors.New(ctx, errorcode.BadRequestError,
+		return errors.New(ctx, errorcode.ValidationError,
 			fmt.Errorf("paid mount greater than total due loan amount")).Report()
 	}
 
