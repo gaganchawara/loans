@@ -52,6 +52,17 @@ func (s *server) RejectLoan(ctx context.Context, request *loansv1.RejectLoanRequ
 	}
 }
 
+func (s *server) RepayLoan(ctx context.Context, request *loansv1.RepayLoanRequest) (*loansv1.LoansResponse, error) {
+	span, ctx := ot.StartSpanFromContext(ctx, "loan.server.RepayLoan")
+	defer span.Finish()
+
+	if agg, ierr := s.service.RepayLoan(ctx, request); ierr != nil {
+		return nil, ierr
+	} else {
+		return agg.Proto(), nil
+	}
+}
+
 func (s *server) GetLoans(ctx context.Context, request *loansv1.GetLoansRequest) (*loansv1.LoansResponse, error) {
 	span, ctx := ot.StartSpanFromContext(ctx, "loan.server.GetLoans")
 	defer span.Finish()

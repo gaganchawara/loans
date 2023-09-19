@@ -22,4 +22,7 @@ service LoansAPI {
   rpc GetLoans(GetLoansRequest) returns (LoansResponse) {
       option (google.api.http) = { get:"/v1/loans/{loan_id}"  };
   }
+  rpc RepayLoan(RepayLoanRequest) returns (LoansResponse) {
+        option (google.api.http) = { post:"/v1/loans/repay" body:"*"};
+  }
 }

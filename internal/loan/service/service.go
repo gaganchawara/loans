@@ -84,6 +84,24 @@ func (s service) RejectLoan(ctx context.Context, req *loansv1.RejectLoanRequest)
 	return agg, nil
 }
 
+func (s service) RepayLoan(ctx context.Context, req *loansv1.RepayLoanRequest) (*aggregate.LoanAgg, errors.Error) {
+	agg, ierr := s.repo.LoadLoanAgg(ctx, req.LoanId)
+	if ierr != nil {
+		return nil, ierr
+	}
+
+	if ierr = agg.RepayAmount(ctx, req.Amount); ierr != nil {
+		return nil, ierr
+	}
+
+	ierr = s.repo.SaveLoanAgg(ctx, agg)
+	if ierr != nil {
+		return nil, ierr
+	}
+
+	return agg, nil
+}
+
 func (s service) GetLoanAggById(ctx context.Context, loanId string) (*aggregate.LoanAgg, errors.Error) {
 	return s.repo.LoadLoanAgg(ctx, loanId)
 }
