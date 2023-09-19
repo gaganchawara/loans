@@ -10,6 +10,9 @@ import "loans/v1/loans.proto";
 // LoansAPI defines the loans service APIs.
 service LoansAPI {
   // Check returns HealthCheckResponse for the requested service.
+  rpc ApplyLoan(ApplyLoanRequest) returns (LoansResponse) {
+      option (google.api.http) = { post:"/v1/loans/apply" body:"*"};
+  }
   rpc GetLoans(GetLoansRequest) returns (LoansResponse) {
       option (google.api.http) = { get:"/v1/loans/{loan_id}"  };
   }

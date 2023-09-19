@@ -7,3 +7,12 @@ type Entity struct {
 	UpdatedAt time.Time  `gorm:"column:updated_at" json:"updated_at"`
 	DeletedAt *time.Time `gorm:"column:deleted_at" json:"deleted_at,omitempty"`
 }
+
+func (e *Entity) RefreshTimestamps() {
+	now := time.Now()
+
+	if e.CreatedAt.IsZero() {
+		e.CreatedAt = now
+	}
+	e.UpdatedAt = now
+}

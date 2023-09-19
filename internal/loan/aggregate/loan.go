@@ -6,7 +6,7 @@ import (
 )
 
 type LoanAgg struct {
-	Loan *entity.Loan
+	Loan       *entity.Loan
 	Repayments []*entity.Repayment
 }
 

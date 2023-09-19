@@ -14,10 +14,6 @@ import (
 	"github.com/gaganchawara/loans/internal/loan/service"
 	loansv1 "github.com/gaganchawara/loans/rpc/loans/v1"
 
-	"github.com/gaganchawara/loans/pkg/errors"
-
-	grpcrecovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
-
 	"github.com/gaganchawara/loans/internal/errorcode"
 
 	ctxkeys "github.com/gaganchawara/loans/internal/constants/ctx_keys"
@@ -120,10 +116,7 @@ func getServerInterceptors() []grpc.UnaryServerInterceptor {
 		interceptors.UnaryServerLoggerInterceptor(ctxkeys.AllKeys()),
 		interceptors.UnaryServerGrpcErrorInterceptor(errorcode.ErrorsMap),
 		grpcprometheus.UnaryServerInterceptor,
-		grpcrecovery.UnaryServerInterceptor(grpcrecovery.WithRecoveryHandlerContext(
-			func(ctx context.Context, p interface{}) (err error) {
-				return errors.New(ctx, errorcode.InternalServerError, err).Report()
-			})),
+		interceptors.PanicInterceptor(),
 	}
 }
 

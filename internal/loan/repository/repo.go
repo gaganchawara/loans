@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+
 	"github.com/gaganchawara/loans/internal/loan/aggregate"
 
 	"github.com/gaganchawara/loans/internal/loan/interfaces"
@@ -24,9 +25,24 @@ func NewRepository(db *gorm.DB) interfaces.Repository {
 	}
 }
 
-// CreateLoan creates a new loan record in the database.
-func (r repo) CreateLoan(ctx context.Context, loan *entity.Loan) errors.Error {
-	q := r.db.Table(loan.TableName()).Create(loan)
+// SaveLoanAgg creates a new loan record in the database.
+func (r repo) SaveLoanAgg(ctx context.Context, loanAgg *aggregate.LoanAgg) errors.Error {
+	if ierr := r.SaveLoan(ctx, loanAgg.Loan); ierr != nil {
+		return ierr
+	}
+
+	for _, repayment := range loanAgg.Repayments {
+		if ierr := r.SaveRepayment(ctx, repayment); ierr != nil {
+			return ierr
+		}
+	}
+
+	return nil
+}
+
+// SaveLoan updates existing record in the loans table and creates a new one if it does not exist.
+func (r repo) SaveLoan(ctx context.Context, loan *entity.Loan) errors.Error {
+	q := r.db.Table(loan.TableName()).Save(loan)
 	if q.Error != nil {
 		return errors.New(ctx, errorcode.InternalServerError, q.Error).Report()
 	}
@@ -34,9 +50,9 @@ func (r repo) CreateLoan(ctx context.Context, loan *entity.Loan) errors.Error {
 	return nil
 }
 
-// UpdateLoan updates an existing loan record in the database.
-func (r repo) UpdateLoan(ctx context.Context, loan *entity.Loan) errors.Error {
-	q := r.db.Table(loan.TableName()).Updates(loan)
+// SaveRepayment updates existing record in the repayment table and creates a new one if it does not exist.
+func (r repo) SaveRepayment(ctx context.Context, repayment *entity.Repayment) errors.Error {
+	q := r.db.Table(repayment.TableName()).Save(repayment)
 	if q.Error != nil {
 		return errors.New(ctx, errorcode.InternalServerError, q.Error).Report()
 	}

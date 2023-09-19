@@ -19,6 +19,17 @@ func NewServer(service interfaces.Service) *server {
 	}
 }
 
+func (s *server) ApplyLoan(ctx context.Context, request *loansv1.ApplyLoanRequest) (*loansv1.LoansResponse, error) {
+	span, ctx := ot.StartSpanFromContext(ctx, "loan.server.ApplyLoan")
+	defer span.Finish()
+
+	if agg, ierr := s.service.ApplyLoan(ctx, request); ierr != nil {
+		return nil, ierr
+	} else {
+		return agg.Proto(), nil
+	}
+}
+
 func (s *server) GetLoans(ctx context.Context, request *loansv1.GetLoansRequest) (*loansv1.LoansResponse, error) {
 	span, ctx := ot.StartSpanFromContext(ctx, "loan.server.GetLoans")
 	defer span.Finish()

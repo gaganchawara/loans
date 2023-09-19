@@ -6,6 +6,11 @@ option go_package = "loans/v1;loansv1";
 
 import "google/api/annotations.proto";
 
+message ApplyLoanRequest {
+  int64 amount = 3;
+  int32 term = 4;
+}
+
 message GetLoansRequest {
   string loan_id = 1;
 }

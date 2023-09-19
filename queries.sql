@@ -7,10 +7,10 @@ CREATE TABLE loan
     term         INT,
     status       VARCHAR(15) NOT NULL,
     approved_by  VARCHAR(50),
-    disbursed_at BIGINT      NOT NULL,
-    created_at   BIGINT      NOT NULL,
-    updated_at   BIGINT      NOT NULL,
-    deleted_at   BIGINT
+    disbursed_at TIMESTAMP,
+    created_at   TIMESTAMP   NOT NULL,
+    updated_at   TIMESTAMP   NOT NULL,
+    deleted_at   TIMESTAMP
 );
 
 -- create repayments table query
@@ -21,8 +21,8 @@ CREATE TABLE repayment
     amount      BIGINT,
     paid_amount BIGINT,
     status      VARCHAR(15) NOT NULL,
-    due_date    BIGINT,
-    created_at  BIGINT      NOT NULL,
-    updated_at  BIGINT      NOT NULL,
-    deleted_at  BIGINT
+    due_date    DATE,
+    created_at  TIMESTAMP   NOT NULL,
+    updated_at  TIMESTAMP   NOT NULL,
+    deleted_at  TIMESTAMP
 );

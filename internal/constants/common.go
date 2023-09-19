@@ -1,7 +1,7 @@
 package constants
 
 const (
-	UserIDHeaderKey      = "X-User-ID"
-	AdminIDHeaderKey     = "X-Admin-ID"
-	AccountTypeHeaderKey = "X-Account-Type"
+	UserIDHeaderKey      = "x-user-id"
+	AdminIDHeaderKey     = "x-admin-id"
+	AccountTypeHeaderKey = "x-account-type"
 )

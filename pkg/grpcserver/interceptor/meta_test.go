@@ -10,7 +10,7 @@ import (
 
 func TestHeaderInterceptor(t *testing.T) {
 	headerTags := map[string]string{
-		"tag1": "tag1",
+		"tag1":  "tag1",
 		"tag-2": "tag2",
 	}
 
@@ -37,7 +37,7 @@ func TestHeaderInterceptor(t *testing.T) {
 
 func Test_extractAndSetMetadataValues(t *testing.T) {
 	headerTags := map[string]string{
-		"tag1": "tag1",
+		"tag1":  "tag1",
 		"tag-2": "tag2",
 	}
 

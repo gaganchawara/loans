@@ -36,7 +36,7 @@ func TypeFromString(ctx context.Context, s string) (Type, errors.Error) {
 	val, ok := typeFromString[s]
 	if !ok {
 		var garbage Type
-		return garbage, errors.New(ctx, errorcode.BadRequestError, fmt.Errorf("invalid Market Segement")).Report()
+		return garbage, errors.New(ctx, errorcode.BadRequestError, fmt.Errorf("invalid repayment status")).Report()
 	}
 	return val, nil
 }
@@ -60,6 +60,19 @@ func AllString() []string {
 
 func (s Type) String() string {
 	return typeToString[s]
+}
+
+func (s *Type) Scan(value interface{}) error {
+	if value == nil {
+		return nil
+	}
+
+	val, ok := typeFromString[string(value.([]byte))]
+	if !ok {
+		return fmt.Errorf("invalid loan status")
+	}
+	*s = val
+	return nil
 }
 
 func (s Type) Value() (driver.Value, error) {
