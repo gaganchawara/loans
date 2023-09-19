@@ -10,6 +10,8 @@ BUILD_OUT_DIR := "bin/"
 API_OUT       := "bin/api"
 API_MAIN_FILE := "cmd/api/main.go"
 
+MOCK_IN := "internal/loans/mock"
+
 RPC_ROOT := "rpc/"
 
 .PHONY: go-build-api ## Build the binary file for API server
@@ -49,3 +51,16 @@ proto-generate:
 clean:
 	 @echo " + Removing cloned and generated files\n"
 	 @rm -rf $(API_OUT) $(RPC_ROOT)
+
+.PHONY: mock-deps
+mock-deps:
+	@echo "\n + Fetching mocking related dependencies \n"
+	@go install github.com/golang/mock/mockgen@v1.6.0
+
+.PHONY: generate-mocks ## Generate mocks from interfaces
+generate-mocks:
+	@echo "\n Clearing any existing mocks in $(MOCK_IN)\n"
+	rm -rf $(MOCK_IN)
+	rm -rf $(PKG_MOCK_IN)
+	@echo "\n Generating new mocks in $(MOCK_IN)\n"
+	mockgen -destination=internal/loan/mock/repository.go -package=mock github.com/gaganchawara/loans/internal/loan/interfaces Repository

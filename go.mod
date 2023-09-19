@@ -7,6 +7,7 @@ require (
 	github.com/DATA-DOG/go-sqlmock v1.5.0
 	github.com/asaskevich/govalidator v0.0.0-20200108200545-475eaeb16496
 	github.com/dlmiddlecote/sqlstats v1.0.2
+	github.com/golang/mock v1.4.4
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.2
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.5.0
