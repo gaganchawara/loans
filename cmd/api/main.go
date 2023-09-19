@@ -2,12 +2,13 @@ package main
 
 import (
 	"context"
-	"github.com/gaganchawara/loans/internal/iam"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/gaganchawara/loans/internal/iam"
 
 	"github.com/gaganchawara/loans/internal/loan/interfaces"
 	"github.com/gaganchawara/loans/internal/loan/repository"

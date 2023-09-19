@@ -3,6 +3,9 @@ package factory
 import (
 	"context"
 	"fmt"
+	"time"
+
+	"github.com/gaganchawara/loans/internal/helper"
 
 	ctxkeys "github.com/gaganchawara/loans/internal/constants/ctx_keys"
 	"github.com/gaganchawara/loans/internal/errorcode"
@@ -12,7 +15,7 @@ import (
 	loansv1 "github.com/gaganchawara/loans/rpc/loans/v1"
 )
 
-func Build(ctx context.Context, request *loansv1.ApplyLoanRequest) (*aggregate.LoanAgg, errors.Error) {
+func BuildLoan(ctx context.Context, request *loansv1.ApplyLoanRequest) (*aggregate.LoanAgg, errors.Error) {
 	loan, ierr := entity.NewLoanEntity(ctx)
 	if ierr != nil {
 		return nil, ierr
@@ -30,4 +33,23 @@ func Build(ctx context.Context, request *loansv1.ApplyLoanRequest) (*aggregate.L
 	loan.Term = request.Term
 
 	return &aggregate.LoanAgg{Loan: loan}, nil
+}
+
+func BuildRepayments(_ context.Context, loan *entity.Loan) (*aggregate.LoanAgg, errors.Error) {
+	var repayments []*entity.Repayment
+	repaymentAmounts := helper.BreakAmount(loan.Amount, int(loan.Term))
+
+	now := time.Now()
+
+	for _, repaymentAmount := range repaymentAmounts {
+		now = now.AddDate(0, 0, 7)
+		repayment := entity.NewRepaymentEntity()
+		repayment.LoanId = loan.Id
+		repayment.Amount = repaymentAmount
+		repayment.DueDate = now
+
+		repayments = append(repayments, repayment)
+	}
+
+	return &aggregate.LoanAgg{Loan: loan, Repayments: repayments}, nil
 }

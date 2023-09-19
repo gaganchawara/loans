@@ -18,7 +18,7 @@ func PanicInterceptor() grpc.UnaryServerInterceptor {
 		defer func() {
 			if r := recover(); r != nil {
 				// Handle the panic and return an error with Internal gRPC status code
-				err = errors.New(ctx, errorcode.InternalServerPanic, fmt.Errorf("error", err)).Report()
+				err = errors.New(ctx, errorcode.InternalServerPanic, fmt.Errorf("error: %v", r)).Report()
 			}
 		}()
 

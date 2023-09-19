@@ -3,6 +3,7 @@ package iam
 import (
 	"context"
 	"fmt"
+
 	"github.com/gaganchawara/loans/internal/enums/accounttype"
 	"github.com/gaganchawara/loans/internal/errorcode"
 	"github.com/gaganchawara/loans/pkg/errors"
@@ -16,7 +17,7 @@ import (
 var UserRouteAccess = map[string]bool{
 	"/loans.v1.LoansAPI/GetLoans":    true,
 	"/loans.v1.LoansAPI/ApplyLoan":   true,
-	"/loans.v1.LoansAPI/ApproveLoan": true,
+	"/loans.v1.LoansAPI/ApproveLoan": false,
 }
 
 // UserAccessInterceptor is a gRPC interceptor that checks whether a user has access

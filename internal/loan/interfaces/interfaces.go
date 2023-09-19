@@ -12,6 +12,7 @@ import (
 
 type Service interface {
 	ApplyLoan(ctx context.Context, req *loansv1.ApplyLoanRequest) (*aggregate.LoanAgg, errors.Error)
+	ApproveLoan(ctx context.Context, req *loansv1.ApproveLoanRequest) (*aggregate.LoanAgg, errors.Error)
 	GetLoanAggById(ctx context.Context, loanId string) (*aggregate.LoanAgg, errors.Error)
 }
 

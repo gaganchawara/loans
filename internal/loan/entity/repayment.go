@@ -45,7 +45,6 @@ func (e *Repayment) Proto() *loansv1.Repayment {
 		DueDate:    e.DueDate.Unix(),
 		CreatedAt:  e.CreatedAt.Unix(),
 		UpdatedAt:  e.UpdatedAt.Unix(),
-		DeletedAt:  e.DeletedAt.Unix(),
 	}
 
 	if e.DeletedAt != nil {

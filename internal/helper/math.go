@@ -1,6 +1,6 @@
 package helper
 
-func BreakAmount(amount int64, term int32) []int64 {
+func BreakAmount(amount int64, term int) []int64 {
 	// Calculate the base amount for each term.
 	baseAmount := amount / int64(term)
 
