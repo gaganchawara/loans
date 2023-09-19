@@ -3,6 +3,9 @@ package server
 import (
 	"context"
 
+	"github.com/gaganchawara/loans/internal/loan/tracecode"
+	"github.com/gaganchawara/loans/pkg/logger"
+
 	"github.com/gaganchawara/loans/internal/loan/interfaces"
 	loansv1 "github.com/gaganchawara/loans/rpc/loans/v1"
 	ot "github.com/opentracing/opentracing-go"
@@ -23,6 +26,11 @@ func (s *server) ApplyLoan(ctx context.Context, request *loansv1.ApplyLoanReques
 	span, ctx := ot.StartSpanFromContext(ctx, "loan.server.ApplyLoan")
 	defer span.Finish()
 
+	logger.Get(ctx).WithFields(map[string]interface{}{
+		"amount": request.Amount,
+		"term":   request.Term,
+	}).Info(tracecode.ApplyLoanRequest)
+
 	if agg, ierr := s.service.ApplyLoan(ctx, request); ierr != nil {
 		return nil, ierr
 	} else {
@@ -33,6 +41,10 @@ func (s *server) ApplyLoan(ctx context.Context, request *loansv1.ApplyLoanReques
 func (s *server) ApproveLoan(ctx context.Context, request *loansv1.ApproveLoanRequest) (*loansv1.LoansResponse, error) {
 	span, ctx := ot.StartSpanFromContext(ctx, "loan.server.ApproveLoan")
 	defer span.Finish()
+
+	logger.Get(ctx).WithFields(map[string]interface{}{
+		"loan_id": request.LoanId,
+	}).Info(tracecode.ApproveLoanRequest)
 
 	if agg, ierr := s.service.ApproveLoan(ctx, request); ierr != nil {
 		return nil, ierr
@@ -45,6 +57,10 @@ func (s *server) RejectLoan(ctx context.Context, request *loansv1.RejectLoanRequ
 	span, ctx := ot.StartSpanFromContext(ctx, "loan.server.RejectLoan")
 	defer span.Finish()
 
+	logger.Get(ctx).WithFields(map[string]interface{}{
+		"loan_id": request.LoanId,
+	}).Info(tracecode.RejectLoanRequest)
+
 	if agg, ierr := s.service.RejectLoan(ctx, request); ierr != nil {
 		return nil, ierr
 	} else {
@@ -56,6 +72,11 @@ func (s *server) RepayLoan(ctx context.Context, request *loansv1.RepayLoanReques
 	span, ctx := ot.StartSpanFromContext(ctx, "loan.server.RepayLoan")
 	defer span.Finish()
 
+	logger.Get(ctx).WithFields(map[string]interface{}{
+		"loan_id": request.LoanId,
+		"amount":  request.Amount,
+	}).Info(tracecode.RepayLoanRequest)
+
 	if agg, ierr := s.service.RepayLoan(ctx, request); ierr != nil {
 		return nil, ierr
 	} else {
@@ -63,9 +84,13 @@ func (s *server) RepayLoan(ctx context.Context, request *loansv1.RepayLoanReques
 	}
 }
 
-func (s *server) GetLoans(ctx context.Context, request *loansv1.GetLoansRequest) (*loansv1.LoansResponse, error) {
+func (s *server) GetLoans(ctx context.Context, request *loansv1.GetLoanRequest) (*loansv1.LoansResponse, error) {
 	span, ctx := ot.StartSpanFromContext(ctx, "loan.server.GetLoans")
 	defer span.Finish()
+
+	logger.Get(ctx).WithFields(map[string]interface{}{
+		"loan_id": request.LoanId,
+	}).Info(tracecode.GetLoanRequest)
 
 	if agg, ierr := s.service.GetLoanAggById(ctx, request.LoanId); ierr != nil {
 		return nil, ierr

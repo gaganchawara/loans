@@ -4,6 +4,8 @@ import (
 	"context"
 	"time"
 
+	"github.com/gaganchawara/loans/internal/loan/validation"
+
 	"github.com/gaganchawara/loans/internal/enums/loanstatus"
 
 	"github.com/gaganchawara/loans/internal/iam"
@@ -26,6 +28,10 @@ func NewService(repo interfaces.Repository) interfaces.Service {
 }
 
 func (s service) ApplyLoan(ctx context.Context, req *loansv1.ApplyLoanRequest) (*aggregate.LoanAgg, errors.Error) {
+	if ierr := validation.ValidateApplyLoanRequest(ctx, req); ierr != nil {
+		return nil, ierr
+	}
+
 	loanAgg, ierr := factory.BuildLoan(ctx, req)
 	if ierr != nil {
 		return nil, ierr
@@ -40,8 +46,16 @@ func (s service) ApplyLoan(ctx context.Context, req *loansv1.ApplyLoanRequest) (
 }
 
 func (s service) ApproveLoan(ctx context.Context, req *loansv1.ApproveLoanRequest) (*aggregate.LoanAgg, errors.Error) {
+	if ierr := validation.ValidateApproveLoanRequest(ctx, req); ierr != nil {
+		return nil, ierr
+	}
+
 	loan, ierr := s.repo.LoadLoan(ctx, req.LoanId)
 	if ierr != nil {
+		return nil, ierr
+	}
+
+	if ierr := validation.ValidateApproveLoanAgg(ctx, loan); ierr != nil {
 		return nil, ierr
 	}
 
@@ -69,8 +83,16 @@ func (s service) ApproveLoan(ctx context.Context, req *loansv1.ApproveLoanReques
 }
 
 func (s service) RejectLoan(ctx context.Context, req *loansv1.RejectLoanRequest) (*aggregate.LoanAgg, errors.Error) {
+	if ierr := validation.ValidateRejectLoanRequest(ctx, req); ierr != nil {
+		return nil, ierr
+	}
+
 	agg, ierr := s.repo.LoadLoanAgg(ctx, req.LoanId)
 	if ierr != nil {
+		return nil, ierr
+	}
+
+	if ierr := validation.ValidateRejectLoanAgg(ctx, agg.Loan); ierr != nil {
 		return nil, ierr
 	}
 
@@ -85,8 +107,16 @@ func (s service) RejectLoan(ctx context.Context, req *loansv1.RejectLoanRequest)
 }
 
 func (s service) RepayLoan(ctx context.Context, req *loansv1.RepayLoanRequest) (*aggregate.LoanAgg, errors.Error) {
+	if ierr := validation.ValidateRepayLoanRequest(ctx, req); ierr != nil {
+		return nil, ierr
+	}
+
 	agg, ierr := s.repo.LoadLoanAgg(ctx, req.LoanId)
 	if ierr != nil {
+		return nil, ierr
+	}
+
+	if ierr := validation.ValidateRepayLoanAgg(ctx, agg, req); ierr != nil {
 		return nil, ierr
 	}
 
@@ -103,5 +133,9 @@ func (s service) RepayLoan(ctx context.Context, req *loansv1.RepayLoanRequest) (
 }
 
 func (s service) GetLoanAggById(ctx context.Context, loanId string) (*aggregate.LoanAgg, errors.Error) {
+	if ierr := validation.ValidateGetLoanRequest(ctx, loanId); ierr != nil {
+		return nil, ierr
+	}
+
 	return s.repo.LoadLoanAgg(ctx, loanId)
 }

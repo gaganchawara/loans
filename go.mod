@@ -4,6 +4,7 @@ go 1.21.1
 
 require (
 	github.com/BurntSushi/toml v1.3.2
+	github.com/asaskevich/govalidator v0.0.0-20200108200545-475eaeb16496
 	github.com/dlmiddlecote/sqlstats v1.0.2
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.2
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0

@@ -24,7 +24,7 @@ message RepayLoanRequest {
   int64 amount = 2;
 }
 
-message GetLoansRequest {
+message GetLoanRequest {
   string loan_id = 1;
 }
 

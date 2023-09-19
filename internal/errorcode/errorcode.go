@@ -8,6 +8,7 @@ const (
 	AuthenticationError = "AUTHENTICATION_ERROR"
 	AuthorizationError  = "AUTHORIZATION_ERROR"
 	BadRequestError     = "BAD_REQUEST_ERROR"
+	ValidationError     = "VALIDATION_ERROR"
 	NotFoundError       = "NOT_FOUND_ERROR"
 )
 

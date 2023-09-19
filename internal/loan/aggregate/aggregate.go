@@ -2,13 +2,11 @@ package aggregate
 
 import (
 	"context"
-	"fmt"
 	"sort"
 
 	"github.com/gaganchawara/loans/internal/enums/loanstatus"
 
 	"github.com/gaganchawara/loans/internal/enums/repaymentstatus"
-	"github.com/gaganchawara/loans/internal/errorcode"
 	"github.com/gaganchawara/loans/internal/loan/entity"
 	"github.com/gaganchawara/loans/pkg/errors"
 	loansv1 "github.com/gaganchawara/loans/rpc/loans/v1"
@@ -22,16 +20,11 @@ type LoanAgg struct {
 func (agg *LoanAgg) RepayAmount(ctx context.Context, paidAmount int64) errors.Error {
 	SortRepaymentsByDueDate(agg.Repayments)
 
-	if agg.GetTotalDueAmount() < paidAmount {
-		return errors.New(ctx, errorcode.BadRequestError,
-			fmt.Errorf("paid paidAmount greater than total due loan paidAmount")).Report()
-	}
-
 	leftAmount := paidAmount
 
 	for _, repayment := range agg.Repayments {
 		if leftAmount == 0 {
-			return nil
+			break
 		}
 		if repayment.Status == repaymentstatus.Paid {
 			continue
