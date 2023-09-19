@@ -2,6 +2,7 @@ package factory
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"time"
 
@@ -46,7 +47,7 @@ func BuildRepayments(_ context.Context, loan *entity.Loan) (*aggregate.LoanAgg, 
 		repayment := entity.NewRepaymentEntity()
 		repayment.LoanId = loan.Id
 		repayment.Amount = repaymentAmount
-		repayment.DueDate = now
+		repayment.DueDate = sql.NullTime{Time: now, Valid: false}
 
 		repayments = append(repayments, repayment)
 	}

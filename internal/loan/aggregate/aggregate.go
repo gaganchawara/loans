@@ -62,7 +62,7 @@ func (agg *LoanAgg) GetTotalDueAmount() int64 {
 // SortRepaymentsByDueDate sorts a slice of Repayment entities by their DueDate in ascending order.
 func SortRepaymentsByDueDate(repayments []*entity.Repayment) {
 	sort.Slice(repayments, func(i, j int) bool {
-		return repayments[i].DueDate.Before(repayments[j].DueDate)
+		return repayments[i].DueDate.Time.Before(repayments[j].DueDate.Time)
 	})
 }
 

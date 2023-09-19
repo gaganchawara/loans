@@ -6,9 +6,10 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/gaganchawara/loans/internal/helpertest"
+
 	"github.com/gaganchawara/loans/internal/enums/loanstatus"
 	"github.com/gaganchawara/loans/internal/errorcode"
-	"github.com/gaganchawara/loans/internal/helper"
 	"github.com/gaganchawara/loans/internal/loan/aggregate"
 	"github.com/gaganchawara/loans/internal/loan/entity"
 	"github.com/gaganchawara/loans/pkg/errors"
@@ -44,7 +45,7 @@ func TestValidateGetLoanRequest(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got := ValidateGetLoanRequest(ctx, tt.args.loanId)
-			helper.AssertEqualError(t, tt.want, got)
+			helpertest.AssertEqualError(t, tt.want, got)
 		})
 	}
 }
@@ -152,7 +153,7 @@ func TestValidateRepayLoanRequest(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got := ValidateRepayLoanRequest(tt.args.ctx, tt.args.request)
-			helper.AssertEqualError(t, tt.want, got)
+			helpertest.AssertEqualError(t, tt.want, got)
 		})
 	}
 }
@@ -230,7 +231,7 @@ func TestValidateRepayLoanAgg(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got := ValidateRepayLoanAgg(tt.args.ctx, tt.args.agg, tt.args.req)
-			helper.AssertEqualError(t, tt.want, got)
+			helpertest.AssertEqualError(t, tt.want, got)
 		})
 	}
 }

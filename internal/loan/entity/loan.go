@@ -68,8 +68,8 @@ func (e *Loan) Proto() *loansv1.Loan {
 		Term:       e.Term,
 		Status:     e.Status.String(),
 		ApprovedBy: &e.ApprovedBy,
-		CreatedAt:  e.CreatedAt.Unix(),
-		UpdatedAt:  e.UpdatedAt.Unix(),
+		CreatedAt:  e.CreatedAt.Time.Unix(),
+		UpdatedAt:  e.UpdatedAt.Time.Unix(),
 	}
 
 	if e.DisbursedAt != nil {
@@ -77,8 +77,8 @@ func (e *Loan) Proto() *loansv1.Loan {
 		proto.DisbursedAt = &disbursedAt
 	}
 
-	if e.DeletedAt != nil {
-		proto.DeletedAt = e.DeletedAt.Unix()
+	if e.DeletedAt.Valid {
+		proto.DeletedAt = e.DeletedAt.Time.Unix()
 	}
 
 	return &proto
