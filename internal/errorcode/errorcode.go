@@ -5,6 +5,8 @@ import "google.golang.org/grpc/codes"
 const (
 	InternalServerError = "INTERNAL_SERVER_ERROR"
 	InternalServerPanic = "INTERNAL_SERVER_PANIC"
+	AuthenticationError = "AUTHENTICATION_ERROR"
+	AuthorizationError  = "AUTHORIZATION_ERROR"
 	BadRequestError     = "BAD_REQUEST_ERROR"
 	NotFoundError       = "NOT_FOUND_ERROR"
 )
@@ -14,6 +16,8 @@ const (
 var ErrorsMap = map[string]codes.Code{
 	InternalServerError: codes.Internal,
 	InternalServerPanic: codes.Internal,
+	AuthenticationError: codes.Unauthenticated,
+	AuthorizationError:  codes.PermissionDenied,
 	BadRequestError:     codes.InvalidArgument,
 	NotFoundError:       codes.NotFound,
 }

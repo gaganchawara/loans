@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"github.com/gaganchawara/loans/internal/iam"
 	"log"
 	"net/http"
 	"os"
@@ -112,6 +113,7 @@ func getServerInterceptors() []grpc.UnaryServerInterceptor {
 			}),
 		interceptors.HeaderInterceptor(ctxkeys.HeaderKeyMap()),
 		interceptors.UnaryServerTraceIdInterceptor(),
+		iam.UserAccessInterceptor(),
 		interceptors.UnaryServerGitCommitHashInterceptor(boot.Config.App.GitCommitHash),
 		interceptors.UnaryServerLoggerInterceptor(ctxkeys.AllKeys()),
 		interceptors.UnaryServerGrpcErrorInterceptor(errorcode.ErrorsMap),
