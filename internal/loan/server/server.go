@@ -3,7 +3,8 @@ package server
 import (
 	"context"
 
-	"github.com/gaganchawara/loans/internal/loan/tracecode"
+	"github.com/gaganchawara/loans/internal/tracecode"
+
 	"github.com/gaganchawara/loans/pkg/logger"
 
 	"github.com/gaganchawara/loans/internal/loan/interfaces"

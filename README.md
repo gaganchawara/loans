@@ -86,6 +86,45 @@ make test-unit
 ```
 This command will run unit tests and show the output in terminal
 
+## Code Traversal
+
+You can explore the different APIs within the `proto/` directories of this project. In particular:
+
+- `proto/loans/v1/loans_api.proto` contains the APIs related to the business logic.
+- `proto/common/health/v1/health_check_api.proto` contains the APIs for health checks.
+
+Here's an overview of the major code structure within this project:
+
+### Internal Logic
+
+- `internal`: This directory houses logic directly related to the core business use case.
+  - `internal/loans/`: Within this domain, you'll find all the logic related to loans.
+    - `server/`: The entry point for handling API calls, where gRPC server handlers are defined.
+    - `service/`: The core service logic, containing all business rules and operations.
+    - `repository/`: Contains logic for interacting with the database.
+    - `factory/`: Includes business logic used for generating new entities.
+    - `validation/`: Contains various validation logic.
+    - `entity/`: Holds entity definitions, which closely resemble the database tables.
+    - `aggregate/`: Houses the loan aggregate, combining Loan and Repayment entities to reflect logical associations.
+  - `internal/config`: Contains configuration structures for environment-specific settings.
+  - `internal/boot`: This package provides a universal bootstrapping function responsible for common initialization routines across different parts of the application.
+  - `internal/errorcode`: Includes error codes and their respective mappings to gRPC status codes.
+  - `internal/iam`: Represents the Identity and Access Manager layer, responsible for authentication and authorization.
+
+### Shared Logic (pkg)
+
+- `pkg`: This directory holds logic that is not specific to the service but can be reused across multiple services, such as gRPC setup, interceptors, and more.
+
+### Configuration
+
+- `config`: Contains configuration data related to the environment settings.
+
+### Application Entry Point
+
+- `cmd/api/main`: This is the main entry point of the service, responsible for initializing all application components and services.
+
+This structured breakdown of the project should help you navigate and understand the codebase efficiently.
+
 ## Prerequisites
 A basic understanding of the following technologies can be beneficial for understanding and working with this code:
 

@@ -33,6 +33,9 @@ import (
 	"google.golang.org/grpc"
 )
 
+// The main function initializes all application components and services,
+// and exposes ports to handle API calls. It sets up the gRPC server, HTTP server,
+// and handles graceful shutdown on receiving SIGINT and SIGTERM signals.
 func main() {
 	ctx := context.Background()
 
