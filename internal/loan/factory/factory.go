@@ -47,7 +47,7 @@ func BuildRepayments(_ context.Context, loan *entity.Loan) (*aggregate.LoanAgg, 
 		repayment := entity.NewRepaymentEntity()
 		repayment.LoanId = loan.Id
 		repayment.Amount = repaymentAmount
-		repayment.DueDate = sql.NullTime{Time: now, Valid: false}
+		repayment.DueDate = sql.NullTime{Time: now, Valid: true}
 
 		repayments = append(repayments, repayment)
 	}
