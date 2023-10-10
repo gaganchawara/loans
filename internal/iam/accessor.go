@@ -52,7 +52,7 @@ func GetAdminId(ctx context.Context) (string, errors.Error) {
 
 // GetUserId retrieves the Admin ID name from the context and returns it.
 func GetUserId(ctx context.Context) (string, errors.Error) {
-	userID, ok := ctx.Value(ctxkeys.RpcMethodKey).(string)
+	userID, ok := ctx.Value(ctxkeys.UserID).(string)
 	if !ok {
 		return "", errors.New(ctx, errorcode.InternalServerError,
 			fmt.Errorf("user id not available")).Report()

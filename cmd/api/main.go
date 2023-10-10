@@ -117,10 +117,10 @@ func getServerInterceptors() []grpc.UnaryServerInterceptor {
 			}),
 		interceptors.HeaderInterceptor(ctxkeys.HeaderKeyMap()),
 		interceptors.UnaryServerTraceIdInterceptor(),
-		iam.UserAccessInterceptor(),
 		interceptors.UnaryServerGitCommitHashInterceptor(boot.Config.App.GitCommitHash),
 		interceptors.UnaryServerLoggerInterceptor(ctxkeys.AllKeys()),
 		interceptors.UnaryServerGrpcErrorInterceptor(errorcode.ErrorsMap),
+		iam.UserAccessInterceptor(),
 		grpcprometheus.UnaryServerInterceptor,
 		interceptors.PanicInterceptor(),
 	}

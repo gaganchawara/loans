@@ -120,6 +120,10 @@ func (s service) RepayLoan(ctx context.Context, req *loansv1.RepayLoanRequest) (
 		return nil, ierr
 	}
 
+	if ierr = iam.ValidateAccessToUser(ctx, agg.Loan.UserId); ierr != nil {
+		return nil, ierr
+	}
+
 	if ierr = agg.RepayAmount(ctx, req.Amount); ierr != nil {
 		return nil, ierr
 	}
@@ -137,5 +141,14 @@ func (s service) GetLoanAggById(ctx context.Context, loanId string) (*aggregate.
 		return nil, ierr
 	}
 
-	return s.repo.LoadLoanAgg(ctx, loanId)
+	agg, ierr := s.repo.LoadLoanAgg(ctx, loanId)
+	if ierr != nil {
+		return nil, ierr
+	}
+
+	if ierr = iam.ValidateAccessToUser(ctx, agg.Loan.UserId); ierr != nil {
+		return nil, ierr
+	}
+
+	return agg, nil
 }

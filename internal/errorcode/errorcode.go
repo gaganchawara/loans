@@ -20,5 +20,6 @@ var ErrorsMap = map[string]codes.Code{
 	AuthenticationError: codes.Unauthenticated,
 	AuthorizationError:  codes.PermissionDenied,
 	BadRequestError:     codes.InvalidArgument,
+	ValidationError:     codes.InvalidArgument,
 	NotFoundError:       codes.NotFound,
 }

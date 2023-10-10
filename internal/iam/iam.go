@@ -82,7 +82,10 @@ func ValidateAccessToUser(ctx context.Context, userID string) errors.Error {
 	}
 
 	if accessorUserID != userID {
-		return errors.New(ctx, errorcode.AuthenticationError, ierr).Report()
+		return errors.New(ctx, errorcode.AuthorizationError, ierr).WithData(map[string]string{
+			"accessor_user_id": accessorUserID,
+			"user_id":          userID,
+		}).Report()
 	}
 
 	return nil
