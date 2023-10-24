@@ -21,7 +21,7 @@ func (hook *StackTraceHook) Fire(entry *logrus.Entry) error {
 	stack := debug.Stack()
 	stack = bytes.ReplaceAll(stack, []byte("\t"), []byte("")) // Remove all tabs
 	stackArray := strings.Split(string(stack), "\n")
-	stackArray = stackArray[16:]
+	stackArray = stackArray[19:]
 	entry.Data["stack_trace"] = stackArray
 	return nil
 }
